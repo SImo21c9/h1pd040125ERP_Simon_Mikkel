@@ -13,6 +13,6 @@ public class Address
 
     public string GetAddress()
     {
-        return $" {HouseNumber}, {Street}, {StreetNumber}, {City}, {State}, {PostalCode}, {Country}";
+        return $"{HouseNumber},{Street}, {StreetNumber}, {City}, {State}, {PostalCode}, {Country}";
     }
 }

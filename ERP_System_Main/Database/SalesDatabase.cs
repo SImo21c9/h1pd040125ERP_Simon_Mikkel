@@ -1,44 +1,99 @@
-﻿using ERP_System;
-using System;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
+
+namespace ERP_System;
+using Microsoft.Data.SqlClient;
+using TECHCOOL.UI;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-public class SalesDatabase : SalesOrder
+public partial class Database
 {
-    private readonly Dictionary<string, SalesOrder> _salesOrders = new();
+    private List<SalesOrder> salesOrders = new();
+    private int nextSalesOrderId = 1;
 
-    // Hent salgsordre ud fra id
-    public SalesOrder? GetSalesOrderById(string id)
+    public SalesOrder? GetSalesOrderById(int id)
     {
-        _salesOrders.TryGetValue(id, out var order);
-        return order;
+        foreach (var order in salesOrders)
+        {
+            if (order.SalesOrderId == id)
+            {
+                return order;
+            }
+        }
+        return null;
     }
 
-    // Hent alle salgsordrer
-    public IReadOnlyCollection<SalesOrder> GetAllSalesOrders()
+    public SalesOrder[] GetSalesOrders()
     {
-        return _salesOrders.Values;
+        return salesOrders.ToArray();
     }
 
-    // Indsæt salgsordre
-    public bool InsertSalesOrder(SalesOrder order)
+    public void AddSalesOrder(SalesOrder order)
     {
-        return _salesOrders.TryAdd(order.OrderNumber, order);
+        SqlConnection connection = GetConnection();
+        SqlCommand command = connection.CreateCommand();
+        if (order.SalesOrderId == 0)
+        {
+            command.CommandText = "INSERT INTO Products () VALUES (@GF)";
+            command.Parameters.AddWithValue("@SalesOrderId", nextSalesOrderId);
+            
+            order.SalesOrderId = nextSalesOrderId++;
+            order.Name = order.OrderNumber;
+            salesOrders.Add(order);
+        }
+        else
+        {
+            command.CommandText = "GET ALL ";
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Customer salesOrderadd = new();
+                salesOrderadd.CustomerId = reader.GetInt32(0);
+                salesOrderadd.FirstName = reader.GetString(40);
+                salesOrderadd.LastName = reader.GetString(45);
+                salesOrderadd.Email = reader.GetString(70);
+                salesOrderadd.PhoneNumber = reader.GetString(40);
+                salesOrderadd.StreetNumber = reader.GetString(40);
+                salesOrderadd.Street = reader.GetString(10);
+                salesOrderadd.City = reader.GetString(50);
+                salesOrderadd.PostCode = reader.GetString(10);
+                salesOrderadd.Country = (Country) reader.GetInt32(0);
+
+            }
+        }
+    }
+    
+    
+ 
+    public void UpdateSalesOrder(SalesOrder order)
+    {
+        if (order.SalesOrderId == 0)
+        {
+            AddSalesOrder(order);
+            return;
+        }
+
+        SalesOrder? oldOrder = GetSalesOrderById(order.SalesOrderId);
+        if (oldOrder == null)
+        {
+            return;
+        }
+
+        oldOrder.OrderNumber = order.OrderNumber;
+        oldOrder.Name = order.OrderNumber;
+        oldOrder.Customer = order.Customer;
+        oldOrder.Date = order.Date;
+        oldOrder.TotalAmount = order.TotalAmount;
+        oldOrder.Status = order.Status;
+        oldOrder.Products = order.Products;
     }
 
-    // Opdater salgsordre
-    public bool UpdateSalesOrder(SalesOrder updatedOrder, string id)
+    public void DeleteSalesOrder(int id)
     {
-        if (!_salesOrders.ContainsKey(id)) return false;
-        _salesOrders[id] = updatedOrder;
-        return true;
-    }
-
-    // Slet salgsordre ud fra id
-    public bool DeleteSalesOrder(string id)
-    {
-        return _salesOrders.Remove(id);
+        SalesOrder? found = GetSalesOrderById(id);
+        if (found != null)
+        {
+            salesOrders.Remove(found);
+        }
     }
 }

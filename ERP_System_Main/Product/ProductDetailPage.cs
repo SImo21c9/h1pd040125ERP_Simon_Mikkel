@@ -4,14 +4,12 @@ namespace ERP_System;
 
 public class ProductDetailPage : Screen
 {
-    private int Test { get; set; }
-    private int Test1 { get; set; }
-    private int Test2 { get; set; }
     public override string Title { get; set; } = "Product";
 
     protected override void Draw()
     {
         ListPage<Product> lp = new();
+        lp.AddKey(ConsoleKey.F1, createProduct);
         lp.AddColumn("ProductNumber", nameof(Product.ItemID));
         lp.AddColumn("Name", nameof(Product.Name));
         lp.AddColumn("Description", nameof(Product.Description));
@@ -45,6 +43,12 @@ public class ProductDetailPage : Screen
                 if (selected != null)
                     Display(new ProductEdit(selected));
                 break;
+        }
+
+        void createProduct(Product _)
+        {
+            Product newProduct = new();
+            Display(new ProductEdit(newProduct));
         }
     }
 }
