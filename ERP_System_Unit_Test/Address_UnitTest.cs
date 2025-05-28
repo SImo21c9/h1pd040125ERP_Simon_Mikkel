@@ -49,7 +49,7 @@ namespace ERP_System_Test
         public void TestCaseAddressPass()
         {
             // Arrange
-            string Street = "Struervej";
+            string Street = " Struervej";
             string City = "Aalborg";
             string State = "Nordjylland";
             string HouseNumber = "70";
