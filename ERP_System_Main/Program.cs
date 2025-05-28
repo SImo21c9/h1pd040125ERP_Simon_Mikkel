@@ -21,5 +21,6 @@ public class Program
         mainMenu.Add(productListPage);
         mainMenu.Add(salesOrderList);
         Screen.Display(mainMenu);
+        //i just added this to test the workflow runs 
     }
 }
