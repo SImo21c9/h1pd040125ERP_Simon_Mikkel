@@ -49,7 +49,7 @@ namespace ERP_System_Test
         public void TestCaseAddressPass()
         {
             // Arrange
-            string Street = " Struervej";
+            string Street = "Struervej";
             string City = "Aalborg";
             string State = "Nordjylland";
             string HouseNumber = "70";
@@ -76,7 +76,7 @@ namespace ERP_System_Test
             //string[] stringsInAddressString = addressStringTrimmed.Split(',');
 
             Assert.Equal(HouseNumber, stringsInAddressString[0]);
-            Assert.Equal(" " + Street, stringsInAddressString[1]);
+            Assert.Equal(Street, stringsInAddressString[1]);
             Assert.Equal(" " + StreetNumber, stringsInAddressString[2]);
             Assert.Equal(" " + City, stringsInAddressString[3]);
             Assert.Equal(" " + State, stringsInAddressString[4]);
