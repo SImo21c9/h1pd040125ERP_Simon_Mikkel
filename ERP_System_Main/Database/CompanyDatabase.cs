@@ -75,7 +75,7 @@ public partial class Database
 
     public Address GetAddressById(int id) //shit does not work 
     {
-
+        throw new NotImplementedException(); // this is not finished 
     }
 
     // Opdaterer en eksisterende virksomhed, hvis ID findes

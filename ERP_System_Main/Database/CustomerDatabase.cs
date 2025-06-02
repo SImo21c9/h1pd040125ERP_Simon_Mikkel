@@ -1,4 +1,6 @@
-﻿namespace ERP_System;
+﻿using Microsoft.Data.SqlClient;
+
+namespace ERP_System;
 using TECHCOOL.UI;
 
 // Håndterer lagring og adgang til kundedata
@@ -29,11 +31,16 @@ public partial class Database
     // Tilføjer en kunde hvis den endnu ikke har et ID
     public void AddCustomer(Customer customer)
     {
+        SqlConnection connection = GetConnection();
+        SqlCommand command = connection.CreateCommand();
         if (customer.CustomerId == 0)
         {
+            command.CommandText = "INSERT INTO Customers () VALUES (@GF)";
+            command.Parameters.AddWithValue("@CustomerId", nextCustomerId);
             customer.CustomerId = nextCustomerId++;
             customers.Add(customer);
         }
+
     }
 
     // Opdaterer en eksisterende kunde, hvis ID findes
@@ -69,3 +76,23 @@ public partial class Database
         }
     }
 }
+        // else
+        // {
+        //     command.CommandText = "update Customers set CustomerId = @CustomerId where CustomerId = @CustomerId";
+        //     SqlDataReader reader = command.ExecuteNonQuery();
+        //     while (reader.Read())
+        //     {
+        //         Customer customeradd = new();
+        //         customeradd.CustomerId = reader.GetInt32(0);
+        //         customeradd.FirstName = reader.GetString(40);
+        //         customeradd.LastName = reader.GetString(45);
+        //         customeradd.Email = reader.GetString(70);
+        //         customeradd.PhoneNumber = reader.GetInt32(0);
+        //         customeradd.StreetNumber = reader.GetString(40);
+        //         customeradd.Street = reader.GetString(10);
+        //         customeradd.City = reader.GetString(50);
+        //         customeradd.PostCode = reader.GetString(10);
+        //         customeradd.Country = (Country) reader.GetInt32(0);
+        //         
+        //     }
+        // }

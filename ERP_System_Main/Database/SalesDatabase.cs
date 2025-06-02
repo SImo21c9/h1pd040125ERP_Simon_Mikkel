@@ -40,6 +40,7 @@ public partial class Database
             order.SalesOrderId = nextSalesOrderId++;
             order.Name = order.OrderNumber;
             salesOrders.Add(order);
+            connection.Open();
         }
         else
         {
@@ -52,13 +53,13 @@ public partial class Database
                 salesOrderadd.FirstName = reader.GetString(40);
                 salesOrderadd.LastName = reader.GetString(45);
                 salesOrderadd.Email = reader.GetString(70);
-                salesOrderadd.PhoneNumber = reader.GetString(40);
+                salesOrderadd.PhoneNumber = reader.GetInt32(0);
                 salesOrderadd.StreetNumber = reader.GetString(40);
                 salesOrderadd.Street = reader.GetString(10);
                 salesOrderadd.City = reader.GetString(50);
                 salesOrderadd.PostCode = reader.GetString(10);
                 salesOrderadd.Country = (Country) reader.GetInt32(0);
-
+                connection.Open();
             }
         }
     }
