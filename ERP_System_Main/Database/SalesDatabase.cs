@@ -63,7 +63,6 @@ public partial class Database
         }
     }
     
-    
  
     public void UpdateSalesOrder(SalesOrder order)
     {
