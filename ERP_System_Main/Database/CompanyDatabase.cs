@@ -24,7 +24,25 @@ public partial class Database
     // Returnerer alle virksomheder i en array
     public Company[] GetCompanies()
     {
-        return companies.ToArray(); // Konverterer listen til et array
+        SqlConnection connection = GetConnection();
+        connection.Open();
+        SqlCommand command = connection.CreateCommand();
+        command.CommandText = "SELECT CompanyId, Street, StreetNumber, PostCode, Country, Currency, Address, CompanyName";
+        command.ExecuteReader();
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            Company companyAdd = new();
+            companyAdd.CompanyId = reader.GetInt32(0);
+            companyAdd.CompanyName = reader.GetString(50);
+            companyAdd.Street = reader.GetString(100);
+            companyAdd.StreetNumber = reader.GetString(101);
+            companyAdd.City = reader.GetString(102);
+            companyAdd.Address = GetAddressById(reader.GetInt32(4)); //(Address)reader.GetInt32(4);
+            companyAdd.Country = (Country)reader.GetInt32(200);
+            companyAdd.Currency = (Currency)reader.GetInt32(201);
+        }
+
     }
 
     // Tilføjer en virksomhed hvis den endnu ikke har et ID
@@ -50,27 +68,9 @@ public partial class Database
             scopeReader.Read();
 
             company.CompanyId = (int) scopeReader.GetInt64(0);
+         
             
         }
-        /*else
-        {
-            command.CommandText = "UPDATE Products SET Name = @Name WHERE CompanyId = @CompanyId ";
-            command.ExecuteNonQuery();
-            SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                Company companyAdd = new();
-                companyAdd.CompanyId = reader.GetInt32(0);
-                companyAdd.CompanyName = reader.GetString(50);
-                companyAdd.Name = reader.GetString(60);
-                companyAdd.Street = reader.GetString(100);
-                companyAdd.StreetNumber = reader.GetString(101);
-                companyAdd.City = reader.GetString(102);
-                companyAdd.Address = GetAddressById(reader.GetInt32(4)); //(Address)reader.GetInt32(4);
-                companyAdd.Country = (Country)reader.GetInt32(200);
-                companyAdd.Currency = (Currency)reader.GetInt32(201);
-            }
-        } */
     }
 
     public Address GetAddressById(int id) //shit does not work 

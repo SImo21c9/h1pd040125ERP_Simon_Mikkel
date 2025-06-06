@@ -25,7 +25,18 @@ public partial class Database
     // Returnerer alle virksomheder i en array
     public Product[] GetProducts()
     {
-        return products.ToArray(); // Konverterer listen til et array
+        SqlConnection connection = GetConnection();
+        connection.Open();
+        SqlCommand command = connection.CreateCommand();
+        command.CommandText = "SELECT ProductId, ItemId, Name, Description, SalesPrice, BoughtPrice, Location, QuantityInStock, Unit";
+        command.ExecuteReader();
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            Product product = new();
+            product.ProductId = reader.GetInt32(0);
+            
+        }
     }
 
     // Tilføjer en virksomhed hvis den endnu ikke har et ID
@@ -34,7 +45,6 @@ public partial class Database
         
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
-       
         command.CommandText = @"INSERT INTO Products (Name, Description, BoughtPrice, 
         SalesPrice, QuantityInStock, Location, Unit) VALUES (@Name,@Description, @BoughttPrice, @SalesPrice, @QuantityInStock, @Location, @Unit)";
         command.Parameters.AddWithValue("@Name", product.Name); 
