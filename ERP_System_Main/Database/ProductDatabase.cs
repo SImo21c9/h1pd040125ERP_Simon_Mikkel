@@ -25,18 +25,29 @@ public partial class Database
     // Returnerer alle virksomheder i en array
     public Product[] GetProducts()
     {
+        List<Product> products = new List<Product>();
         SqlConnection connection = GetConnection();
         connection.Open();
         SqlCommand command = connection.CreateCommand();
-        command.CommandText = "SELECT ProductId, ItemId, Name, Description, SalesPrice, BoughtPrice, Location, QuantityInStock, Unit";
-        command.ExecuteReader();
+        command.CommandText = "SELECT ProductId, ItemId, Name, Description, SalesPrice, BoughtPrice, Location, QuantityInStock, Unit FROM Products";
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
-            Product product = new();
+            Product product = new Product();
             product.ProductId = reader.GetInt32(0);
-            
+            product.ItemID = reader.GetString(1);
+            product.Name = reader.GetString(2);
+            product.Description = reader.GetString(3);
+            product.SalesPrice = reader.GetDecimal(4);
+            product.BoughtPrice = reader.GetDecimal(5);
+            product.Location = reader.GetString(6);
+            product.QuantityInStock = reader.GetDecimal(7);
+            product.Unit = (Enhed)reader.GetInt32(8);
+            products.Add(product);
         }
+        reader.Close();
+        connection.Close();
+        return products.ToArray();
     }
 
     // Tilføjer en virksomhed hvis den endnu ikke har et ID

@@ -24,25 +24,29 @@ public partial class Database
     // Returnerer alle virksomheder i en array
     public Company[] GetCompanies()
     {
+        List<Company> companies = new List<Company>();
         SqlConnection connection = GetConnection();
         connection.Open();
         SqlCommand command = connection.CreateCommand();
-        command.CommandText = "SELECT CompanyId, Street, StreetNumber, PostCode, Country, Currency, Address, CompanyName";
-        command.ExecuteReader();
+        command.CommandText = "SELECT CompanyId, CompanyName, Name, Street, StreetNumber, City, PostCode, Country, Currency FROM Companies";
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
-            Company companyAdd = new();
-            companyAdd.CompanyId = reader.GetInt32(0);
-            companyAdd.CompanyName = reader.GetString(50);
-            companyAdd.Street = reader.GetString(100);
-            companyAdd.StreetNumber = reader.GetString(101);
-            companyAdd.City = reader.GetString(102);
-            companyAdd.Address = GetAddressById(reader.GetInt32(4)); //(Address)reader.GetInt32(4);
-            companyAdd.Country = (Country)reader.GetInt32(200);
-            companyAdd.Currency = (Currency)reader.GetInt32(201);
+            Company company = new Company();
+            company.CompanyId = reader.GetInt32(0);
+            company.CompanyName = reader.GetString(1);
+            company.Name = reader.GetString(2);
+            company.Street = reader.GetString(3);
+            company.StreetNumber = reader.GetString(4);
+            company.City = reader.GetString(5);
+            company.PostCode = reader.GetString(6);
+            company.Country = (Country)reader.GetInt32(7);
+            company.Currency = (Currency)reader.GetInt32(8);
+            companies.Add(company);
         }
-
+        reader.Close();
+        connection.Close();
+        return companies.ToArray();
     }
 
     // Tilføjer en virksomhed hvis den endnu ikke har et ID
