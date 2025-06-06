@@ -40,9 +40,9 @@ public partial class Database
         SqlCommand command = connection.CreateCommand();
         if (company.CompanyId == 0)
         {
-            command.CommandText = "INSERT INTO Companies () VALUES (@GF)";
+            command.CommandText = "INSERT INTO Companies (CompanyId, CompanyName, Street, StreetNumber, City, Address, Country, Currency) VALUES (@CompanyId, @CompanyName, @Street, @StreetNumber, @City, @Address, @Country, @Currency)";
             command.Parameters.AddWithValue("@CompanyId", nextCompanyId);
-            command.ExecuteNonQuery();
+            command.ExecuteReader();
 
             SqlCommand getScopeIdentityCommand = connection.CreateCommand();
             getScopeIdentityCommand.CommandText = "SELECT SCOPE_IDENTITY()";
@@ -52,7 +52,7 @@ public partial class Database
             company.CompanyId = (int) scopeReader.GetInt64(0);
             
         }
-        else
+        /*else
         {
             command.CommandText = "UPDATE Products SET Name = @Name WHERE CompanyId = @CompanyId ";
             command.ExecuteNonQuery();
@@ -70,7 +70,7 @@ public partial class Database
                 companyAdd.Country = (Country)reader.GetInt32(200);
                 companyAdd.Currency = (Currency)reader.GetInt32(201);
             }
-        }
+        } */
     }
 
     public Address GetAddressById(int id) //shit does not work 
@@ -81,29 +81,23 @@ public partial class Database
     // Opdaterer en eksisterende virksomhed, hvis ID findes
     public void UpdateCompany(Company company)
     {
-        if (company.CompanyId == 0)
-        {
-            AddCompany(company);
-            return; // ID ikke angivet � kan ikke opdatere
-        }
+        SqlConnection connection = GetConnection();
+        SqlCommand command = connection.CreateCommand();
 
-        command.CommandText = "UPDATE Products SET Name = @Name WHERE CompanyId = @CompanyId ";
+        connection.Open();
         command.ExecuteNonQuery();
-        SqlDataReader reader = command.ExecuteReader();
-        while (reader.Read())
-        {
-            Company companyAdd = new();
-            companyAdd.CompanyId = reader.GetInt32(0);
-            companyAdd.CompanyName = reader.GetString(50);
-            companyAdd.Name = reader.GetString(60);
-            companyAdd.Street = reader.GetString(100);
-            companyAdd.StreetNumber = reader.GetString(101);
-            companyAdd.City = reader.GetString(102);
-            companyAdd.Address = GetAddressById(reader.GetInt32(4)); //(Address)reader.GetInt32(4);
-            companyAdd.Country = (Country)reader.GetInt32(200);
-            companyAdd.Currency = (Currency)reader.GetInt32(201);
-        }
-        
+        command.CommandText = @"UPDATE Companies SET CompanyName = @CompanyName, 
+                     Name = @Name, Street = @Street, StreetNumber = @StreetNumber,
+                     City = @City, PostCode = @PostCode, Country = @Country,
+                     Currency = @Currency";
+        command.Parameters.AddWithValue("@CompanyName", company.CompanyName);
+        command.Parameters.AddWithValue("@Name", company.Name);
+        command.Parameters.AddWithValue("@Street", company.Street);
+        command.Parameters.AddWithValue("@StreetNumber", company.StreetNumber);
+        command.Parameters.AddWithValue("@City", company.City);
+        command.Parameters.AddWithValue("@PostCode", company.PostCode);
+        command.Parameters.AddWithValue("@Country", company.Country);
+        command.Parameters.AddWithValue(@"Currency", company.Currency);
     }
 
     // Sletter en virksomhed baseret p� ID

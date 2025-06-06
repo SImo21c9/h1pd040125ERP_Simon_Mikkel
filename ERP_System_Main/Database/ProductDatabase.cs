@@ -34,57 +34,36 @@ public partial class Database
         
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
-        if (product.ProductId == 0)
-        {
-            command.CommandText = "INSERT INTO Products () VALUES (@GF)";
-            command.Parameters.AddWithValue("@ProductId", nextProductId);
-            
-            product.ProductId = nextProductId++;
-            product.Name = product.ItemID; // Sørg for at Name også er sat
-            products.Add(product);
-        }
-        else
-        {
-            command.CommandText = "UPDATE Products SET Name = @Name WHERE ProductId = @ProductId";
-            SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                Product productadd = new();
-                productadd.ProductId = reader.GetInt32(0);
-                productadd.ItemID = reader.GetString(50);
-                productadd.Name = reader.GetString(60);
-                productadd.Description = reader.GetString(200);
-                productadd.SalesPrice = reader.GetDecimal(50);
-                productadd.Location = reader.GetString(60);
-                productadd.QuantityInStock = reader.GetInt32(0);
-                productadd.Unit = (Enhed) reader.GetInt32(0);
-            }
-        }
+       
+        command.CommandText = @"INSERT INTO Products (Name, Description, BoughtPrice, 
+        SalesPrice, QuantityInStock, Location, Unit) VALUES (@Name,@Description, @BoughttPrice, @SalesPrice, @QuantityInStock, @Location, @Unit)";
+        command.Parameters.AddWithValue("@Name", product.Name); 
+        command.Parameters.AddWithValue("@Description", product.Description); 
+        command.Parameters.AddWithValue("@BoughtPrice", product.BoughtPrice); 
+        command.Parameters.AddWithValue("SalesPrice", product.SalesPrice); 
+        command.Parameters.AddWithValue("QuantityInStock", product.QuantityInStock); 
+        command.Parameters.AddWithValue("Location", product.Location);
+        command.Parameters.AddWithValue("Unit", product.Unit);
     }
 
     // Opdaterer en eksisterende virksomhed, hvis ID findes
     public void UpdateProduct(Product product)
     {
-        if (product.ProductId == 0)
-        {
-            AddProduct(product);
-            return; // ID ikke angivet � kan ikke opdatere
-        }
+        SqlConnection connection = GetConnection();
+        SqlCommand command = connection.CreateCommand();
+        connection.Open();
+        command.ExecuteNonQuery();
+        command.CommandText = @"Update Product SET Name = @Name, Description = @Description, 
+BoughtPrice = @BoughtPrice, SalesPrice = @SalesPrice, QuantityInStock = @QuantityInStock, 
+Location = @Location, Unit = @Unit";
 
-        Product? oldProduct = GetProductById(product.ProductId);
-        if (oldProduct == null)
-        {
-            return;
-        }
-        oldProduct.Name = product.Name;
-        oldProduct.Description = product.Description;
-        oldProduct.BoughtPrice = product.BoughtPrice;
-        oldProduct.SalesPrice = product.SalesPrice;
-        oldProduct.QuantityInStock = product.QuantityInStock;
-        oldProduct.Location = product.Location;
-        oldProduct.Unit = product.Unit;
-
-       
+        command.Parameters.AddWithValue("@Name", product.Name);
+        command.Parameters.AddWithValue("@Description", product.Description);
+        command.Parameters.AddWithValue("@BoughtPrice", product.BoughtPrice);
+        command.Parameters.AddWithValue("SalesPrice", product.SalesPrice);
+        command.Parameters.AddWithValue("QuantityInStock", product.QuantityInStock);
+        command.Parameters.AddWithValue("Location", product.Location);
+        command.Parameters.AddWithValue("Unit", product.Unit);
     }
 
     // Sletter en virksomhed baseret p� ID

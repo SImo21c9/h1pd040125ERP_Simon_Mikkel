@@ -33,10 +33,22 @@ public partial class Database
     {
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
+        command.ExecuteReader();
         if (customer.CustomerId == 0)
         {
-            command.CommandText = "INSERT INTO Customers () VALUES (@GF)";
-            command.Parameters.AddWithValue("@CustomerId", nextCustomerId);
+            command.CommandText = "INSERT INTO Customers (CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country ) VALUES (@CustomerId, @FirstName, @LastName, @Email, @PhoneNumber, @StreetNumber, @Street, @City, @PostCode, @Country)";
+            command.Parameters.AddWithValue("@CustomerId", customer.CustomerId); 
+            command.Parameters.AddWithValue("@FirstName", customer.FirstName);
+            command.Parameters.AddWithValue("@LastName", customer.LastName);
+            command.Parameters.AddWithValue("@Email", customer.Email);
+            command.Parameters.AddWithValue("@PhoneNumber", customer.PhoneNumber);
+            command.Parameters.AddWithValue("@StreetNumber", customer.StreetNumber);
+            command.Parameters.AddWithValue("@Street", customer.Street);
+            command.Parameters.AddWithValue("@City", customer.City);
+            command.Parameters.AddWithValue("@PostCode", customer.PostCode);
+            command.Parameters.AddWithValue("@Country", customer.Country); 
+            SqlCommand getScopeIdentityCommand = connection.CreateCommand();
+            getScopeIdentityCommand.CommandText = "SELECT SCOPE_IDENTITY()";
             customer.CustomerId = nextCustomerId++;
             customers.Add(customer);
         }
@@ -46,27 +58,24 @@ public partial class Database
     // Opdaterer en eksisterende kunde, hvis ID findes
     public void UpdateCustomer(Customer customer)
     {
-        if (customer.CustomerId == 0)
-        {
-            AddCustomer(customer);
-            return; // ID ikke angivet – kan ikke opdatere
-        }
+        SqlConnection connection = GetConnection();
+        SqlCommand command = connection.CreateCommand();
 
-        Customer? oldCustomer = GetCustomerById(customer.CustomerId);
-        if (oldCustomer == null)
-        {
-            return; // Kunden findes ikke
-        }
-
-        oldCustomer.CompanyName = customer.CompanyName;
-        oldCustomer.Street = customer.Street;
-        oldCustomer.StreetNumber = customer.StreetNumber;
-        oldCustomer.City = customer.City;
-        oldCustomer.Address = customer.Address;
-        oldCustomer.Country = customer.Country;
+        command.ExecuteNonQuery();
+        command.CommandText = @"UPDATE Customer SET CustomerId = @CustomerId, FirstName = @FirstName, LastName = @LastName, Email = @Email, PhoneNumber = @PhoneNumber, StreetNumber = @StreetNumber, Street = @Street, City = @City, PostCode = @PostCode, Country = @Country";
+        command.Parameters.AddWithValue("@CustomerId", customer.CustomerId); 
+        command.Parameters.AddWithValue("@FirstName", customer.FirstName);
+        command.Parameters.AddWithValue("@LastName", customer.LastName);
+        command.Parameters.AddWithValue("@Email", customer.Email);
+        command.Parameters.AddWithValue("@PhoneNumber", customer.PhoneNumber);
+        command.Parameters.AddWithValue("@StreetNumber", customer.StreetNumber);
+        command.Parameters.AddWithValue("@Street", customer.Street);
+        command.Parameters.AddWithValue("@City", customer.City);
+        command.Parameters.AddWithValue("@PostCode", customer.PostCode);
+        command.Parameters.AddWithValue("@Country", customer.Country); 
     }
-    
-    
+
+
     // Sletter en kunde baseret på ID
     public void DeleteCustomer(int id)
     {
