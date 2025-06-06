@@ -54,7 +54,7 @@ public partial class Database
         }
         else
         {
-            command.CommandText = "UPDATE Products SET Name = @Name WHERE CompanyId = @CompanyId";
+            command.CommandText = "UPDATE Products SET Name = @Name WHERE CompanyId = @CompanyId ";
             command.ExecuteNonQuery();
             SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
@@ -87,20 +87,22 @@ public partial class Database
             return; // ID ikke angivet � kan ikke opdatere
         }
 
-        Company? oldCompany = GetCompanyById(company.CompanyId);
-        if (oldCompany == null)
+        command.CommandText = "UPDATE Products SET Name = @Name WHERE CompanyId = @CompanyId ";
+        command.ExecuteNonQuery();
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
         {
-            return; // Virksomheden findes ikke
+            Company companyAdd = new();
+            companyAdd.CompanyId = reader.GetInt32(0);
+            companyAdd.CompanyName = reader.GetString(50);
+            companyAdd.Name = reader.GetString(60);
+            companyAdd.Street = reader.GetString(100);
+            companyAdd.StreetNumber = reader.GetString(101);
+            companyAdd.City = reader.GetString(102);
+            companyAdd.Address = GetAddressById(reader.GetInt32(4)); //(Address)reader.GetInt32(4);
+            companyAdd.Country = (Country)reader.GetInt32(200);
+            companyAdd.Currency = (Currency)reader.GetInt32(201);
         }
-
-        oldCompany.CompanyName = company.CompanyName;
-        oldCompany.Name = company.CompanyName; 
-        oldCompany.Street = company.Street;
-        oldCompany.StreetNumber = company.StreetNumber;
-        oldCompany.City = company.City;
-        oldCompany.Address = company.Address;
-        oldCompany.Country = company.Country;
-        oldCompany.Currency = company.Currency;
         
     }
 

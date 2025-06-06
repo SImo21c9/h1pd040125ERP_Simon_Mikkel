@@ -17,7 +17,7 @@ public partial class Database
     }
 
     private SqlConnection? _connection;
-    private SqlConnection GetConnection()
+    public SqlConnection GetConnection()
     {
         try
         {

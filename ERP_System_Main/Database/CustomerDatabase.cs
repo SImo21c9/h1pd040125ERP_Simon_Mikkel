@@ -65,7 +65,8 @@ public partial class Database
         oldCustomer.Address = customer.Address;
         oldCustomer.Country = customer.Country;
     }
-
+    
+    
     // Sletter en kunde baseret på ID
     public void DeleteCustomer(int id)
     {
@@ -78,7 +79,7 @@ public partial class Database
 }
         // else
         // {
-        //     command.CommandText = "update Customers set CustomerId = @CustomerId where CustomerId = @CustomerId";
+        //    /* command.CommandText = "update Customers set CustomerId = @CustomerId where CustomerId = @CustomerId"; */
         //     SqlDataReader reader = command.ExecuteNonQuery();
         //     while (reader.Read())
         //     {
@@ -96,3 +97,4 @@ public partial class Database
         //         
         //     }
         // }
+// how about you add a delete and update the database classes (i mean for the sql, just i like i did with the add using c# and sql combo)?
