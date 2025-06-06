@@ -25,11 +25,13 @@ public partial class Database
     // Returnerer alle kunder i en array
     public Customer[] GetCustomers()
     {
+        
         List<Customer> customers = new();
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
         command.CommandText = "SELECT CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country FROM Customers";
-        SqlDataReader reader = command.ExecuteNonQuery();
+        command.ExecuteNonQuery();
+        SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
             Customer customeradd = new();
