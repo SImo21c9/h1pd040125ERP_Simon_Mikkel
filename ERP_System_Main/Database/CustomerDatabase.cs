@@ -25,6 +25,26 @@ public partial class Database
     // Returnerer alle kunder i en array
     public Customer[] GetCustomers()
     {
+        List<Customer> customers = new();
+        SqlConnection connection = GetConnection();
+        SqlCommand command = connection.CreateCommand();
+        command.CommandText = "SELECT CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country FROM Customers";
+        SqlDataReader reader = command.ExecuteNonQuery();
+        while (reader.Read())
+        {
+            Customer customeradd = new();
+            customeradd.CustomerId = reader.GetInt32(0);
+            customeradd.FirstName = reader.GetString(40);
+            customeradd.LastName = reader.GetString(45);
+            customeradd.Email = reader.GetString(70);
+            customeradd.PhoneNumber = reader.GetInt32(0);
+            customeradd.StreetNumber = reader.GetString(40);
+            customeradd.Street = reader.GetString(10);
+            customeradd.City = reader.GetString(50);
+            customeradd.PostCode = reader.GetString(10);
+            customeradd.Country = (Country)reader.GetInt32(0);
+
+        }
         return customers.ToArray(); // Konverterer listen til et array
     }
 
