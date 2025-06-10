@@ -27,6 +27,6 @@ public class SalesOrderEdit : Screen
         {
             Database.Instance.UpdateSalesOrder(_salesorder);
         }
-        Display(new SalesOrderList());
+        Quit();
     }
 }

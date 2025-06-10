@@ -30,7 +30,7 @@ public class ProductEdit : Screen
                 Database.Instance.AddProduct(_product);
             else
                 Database.Instance.UpdateProduct(_product);
-        }
-        Display(new ProductListPage(_product));
+        } 
+        Quit();
     }
 }

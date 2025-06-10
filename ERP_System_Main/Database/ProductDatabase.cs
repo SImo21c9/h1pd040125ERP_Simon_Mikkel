@@ -12,68 +12,48 @@ public partial class Database
     // Hent produkt ud fra id
     public Product? GetProductById(int id)
     {
-        Product? product = null;
-        SqlConnection connection = GetConnection();
-        connection.Open();
-        SqlCommand command = connection.CreateCommand();
-        command.CommandText = "SELECT ProductId, ItemId, Name, Description, SalesPrice, BoughtPrice, Location, QuantityInStock, Unit FROM Products WHERE ProductId = @ProductId";
-        command.Parameters.AddWithValue("@ProductId", id);
-        SqlDataReader reader = command.ExecuteReader();
-        if (reader.Read())
+        foreach (var product in products)
         {
-            product = new Product
+            if (product.ProductId == id)
             {
-                ProductId = reader.GetInt32(0),
-                ItemID = reader.GetString(1),
-                Name = reader.GetString(2),
-                Description = reader.GetString(3),
-                SalesPrice = reader.GetDecimal(4),
-                BoughtPrice = reader.GetDecimal(5),
-                Location = reader.GetString(6),
-                QuantityInStock = reader.GetDecimal(7),
-                Unit = (Enhed)reader.GetInt32(8)
-            };
+                return product;
+            }
         }
-        reader.Close();
-        connection.Close();
-        return product;
+
+        return null;
     }
 
     // Hent alle produkter
     public Product[] GetProducts()
     {
-        List<Product> products = new List<Product>();
+        List<Product> productslist = new List<Product>();
         SqlConnection connection = GetConnection();
-        connection.Open();
         SqlCommand command = connection.CreateCommand();
+        
         command.CommandText = "SELECT ProductId, ItemId, Name, Description, SalesPrice, BoughtPrice, Location, QuantityInStock, Unit FROM Products";
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
-            Product product = new Product
-            {
-                ProductId = reader.GetInt32(0),
-                ItemID = reader.GetString(1),
-                Name = reader.GetString(2),
-                Description = reader.GetString(3),
-                SalesPrice = reader.GetDecimal(4),
-                BoughtPrice = reader.GetDecimal(5),
-                Location = reader.GetString(6),
-                QuantityInStock = reader.GetDecimal(7),
-                Unit = (Enhed)reader.GetInt32(8)
-            };
-            products.Add(product);
+            Product product = new Product();
+            product.ProductId = reader.GetInt32(0);
+            product.ItemID = reader.GetString(1);
+            product.Name = reader.GetString(2);
+            product.Description = reader.GetString(3);
+            product.SalesPrice = reader.GetDecimal(4);
+            product.BoughtPrice = reader.GetDecimal(5);
+            product.Location = reader.GetString(6);
+            product.QuantityInStock = reader.GetDecimal(7);
+            product.Unit = (Enhed)reader.GetInt32(8);
+            productslist.Add(product);
         }
         reader.Close();
-        connection.Close();
-        return products.ToArray();
+        return productslist.ToArray();
     }
 
     // Indsæt produkt
     public void AddProduct(Product product)
     {
         SqlConnection connection = GetConnection();
-        connection.Open();
         SqlCommand command = connection.CreateCommand();
         command.CommandText = @"INSERT INTO Products (ItemId, Name, Description, BoughtPrice, SalesPrice, QuantityInStock, Location, Unit)
                                 VALUES (@ItemId, @Name, @Description, @BoughtPrice, @SalesPrice, @QuantityInStock, @Location, @Unit); SELECT SCOPE_IDENTITY();";
@@ -86,12 +66,7 @@ public partial class Database
         command.Parameters.AddWithValue("@Location", product.Location);
         command.Parameters.AddWithValue("@Unit", (int)product.Unit);
 
-        object result = command.ExecuteScalar();
-        if (result != null)
-        {
-            product.ProductId = Convert.ToInt32(result);
-        }
-        connection.Close();
+        products.Add(product);
     }
 
     // Opdater produkt
@@ -112,7 +87,6 @@ public partial class Database
         command.Parameters.AddWithValue("@ProductId", product.ProductId);
 
         command.ExecuteNonQuery();
-        connection.Close();
     }
 
     // Slet produkt
@@ -124,7 +98,12 @@ public partial class Database
         command.CommandText = "DELETE FROM Products WHERE ProductId = @ProductId";
         command.Parameters.AddWithValue("@ProductId", id);
         command.ExecuteNonQuery();
-        connection.Close();
+
+        Product? found = GetProductById(id);
+        if (found != null)
+        {
+            products.Remove(found);
+        }
     }
 }
 
