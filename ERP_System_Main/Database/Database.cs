@@ -23,8 +23,8 @@ public partial class Database
         {
             SqlConnectionStringBuilder builder = new();
             builder.DataSource = "DESKTOP-0PBVOB5";
-            builder.UserID = "Gruppe_Simon_Mikkel";
-            builder.Password = "simon123";
+            builder.UserID = "Gruppe_Mikkel_Simon";
+            builder.Password = "sqlserver1";
             builder.InitialCatalog = "ERP_SYSTEM";
             builder.TrustServerCertificate = true;
 
