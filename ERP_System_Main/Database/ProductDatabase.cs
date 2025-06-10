@@ -25,6 +25,7 @@ public partial class Database
     // Returnerer alle virksomheder i en array
     public Product[] GetProducts()
     {
+        List<Product> products = new();
         SqlConnection connection = GetConnection();
         connection.Open();
         SqlCommand command = connection.CreateCommand();
@@ -35,8 +36,18 @@ public partial class Database
         {
             Product product = new();
             product.ProductId = reader.GetInt32(0);
-            
+            product.ItemID = reader.GetString(255);
+            product.Name = reader.GetString(255);
+            product.Description = reader.GetString(500);
+            product.SalesPrice = reader.GetDecimal(38);
+            product.BoughtPrice = reader.GetDecimal(38);
+            product.Location = reader.GetString(255);
+            product.QuantityInStock = reader.GetDecimal(38);
+            product.Unit = (Enhed) reader.GetInt32(0);
+
         }
+
+        return products.ToArray();
     }
 
     // Tilføjer en virksomhed hvis den endnu ikke har et ID
@@ -45,6 +56,7 @@ public partial class Database
         
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
+        command.ExecuteNonQuery();
         command.CommandText = @"INSERT INTO Products (Name, Description, BoughtPrice, 
         SalesPrice, QuantityInStock, Location, Unit) VALUES (@Name,@Description, @BoughttPrice, @SalesPrice, @QuantityInStock, @Location, @Unit)";
         command.Parameters.AddWithValue("@Name", product.Name); 
