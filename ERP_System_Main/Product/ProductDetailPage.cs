@@ -10,6 +10,9 @@ public class ProductDetailPage : Screen
     {
         ListPage<Product> lp = new();
         lp.AddKey(ConsoleKey.F1, createProduct);
+        lp.AddKey(ConsoleKey.F2, editProduct);
+        lp.AddKey(ConsoleKey.F5, deleteProduct);
+
         lp.AddColumn("ProductNumber", nameof(Product.ItemID));
         lp.AddColumn("Name", nameof(Product.Name));
         lp.AddColumn("Description", nameof(Product.Description));
@@ -17,8 +20,8 @@ public class ProductDetailPage : Screen
         lp.AddColumn("BoughtPrice", nameof(Product.BoughtPrice));
         lp.AddColumn("Location", nameof(Product.Location));
         lp.AddColumn("QuantityInStock", nameof(Product.QuantityInStock));
-        lp.AddColumn("Unit ", nameof(Product.Unit));
-        lp.AddColumn("AvanceProcent", nameof(Product.AvanceProcent));
+        lp.AddColumn("Unit", nameof(Product.Unit));
+        lp.AddColumn("Profit %", nameof(Product.AvanceProcent));
         lp.AddColumn("Profit", nameof(Product.Profit));
 
         foreach (Product product in Database.Instance.GetProducts())
@@ -27,28 +30,26 @@ public class ProductDetailPage : Screen
         }
 
         Product? selected = lp.Select();
-
-        ConsoleKeyInfo key = Console.ReadKey(true);
-        switch (key.Key)
+        if (selected != null)
         {
-            case ConsoleKey.F1: // Opret
-                Product newProduct = new();
-                Display(new ProductEdit(newProduct));
-                break;
-            case ConsoleKey.F2: // Rediger
-                if (selected != null)
-                    Display(new ProductEdit(selected));
-                break;
-            default:
-                if (selected != null)
-                    Display(new ProductEdit(selected));
-                break;
+            Display(new ProductEdit(selected));
         }
 
         void createProduct(Product _)
         {
             Product newProduct = new();
             Display(new ProductEdit(newProduct));
+        }
+
+        void editProduct(Product product)
+        {
+            Display(new ProductEdit(product));
+        }
+
+        void deleteProduct(Product product)
+        {
+            Database.Instance.DeleteProduct(product.ProductId);
+            Display(this);
         }
     }
 }

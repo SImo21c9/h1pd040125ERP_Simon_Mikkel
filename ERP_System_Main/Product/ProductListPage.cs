@@ -15,23 +15,23 @@ public class ProductListPage : Screen
     {
         Clear();
         ListPage<Product> lp = new();
-        lp.AddColumn("ProductId", nameof(Product.ItemID));
+        lp.AddColumn("ProductNumber", nameof(Product.ItemID));
         lp.AddColumn("Name", nameof(Product.Name));
         lp.AddColumn("Stock", nameof(Product.QuantityInStock));
         lp.AddColumn("Bought Price", nameof(Product.BoughtPrice));
-        lp.AddColumn("Sales Price", nameof(Product.SalesPrice));       
-        lp.AddColumn("ProfitMargin", nameof(Product.Profit));
-        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-        switch (keyInfo.Key)
-        {
-            case ConsoleKey.F2:
-            case ConsoleKey.F1:
-                Display(new ProductEdit(_product));
-                break;
-            default:
-                break;
-        }
-        
-    }
+        lp.AddColumn("Sales Price", nameof(Product.SalesPrice));
+        lp.AddColumn("Profit", nameof(Product.Profit));
+        lp.AddColumn("Profit %", nameof(Product.AvanceProcent));
 
+        foreach (var product in Database.Instance.GetProducts())
+        {
+            lp.Add(product);
+        }
+
+        Product? selected = lp.Select();
+        if (selected != null)
+        {
+            Display(new ProductEdit(selected));
+        }
+    }
 }

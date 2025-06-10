@@ -20,15 +20,8 @@ public class Product
     public Enhed Unit { get; set; }                     // F.eks. styk, meter
 
     // Beregn fortjeneste (salgspris - indkøbspris)
-    public decimal Profit()
-    {
-        return SalesPrice - BoughtPrice;
-    }
+    public decimal Profit => SalesPrice - BoughtPrice;
 
     // Beregn avance i procent
-    public decimal AvanceProcent()
-    {
-        if (BoughtPrice == 0) return 0; // Undgå division med 0
-        return (Profit() / BoughtPrice) * 100;
-    }
+    public decimal AvanceProcent => BoughtPrice == 0 ? 0 : (Profit / BoughtPrice) * 100;
 }

@@ -21,14 +21,10 @@ public class CustomerListPage : Screen
         }
         Customer? selected = lp.Select();
 
-        
+        // Only handle F2 (edit) and default (details) here
         ConsoleKeyInfo key = Console.ReadKey(true);
         switch (key.Key)
         {
-            case ConsoleKey.F1: // Opret
-                Customer newCustomer = new();
-                Display(new CustomerEditPage(newCustomer));
-                break;
             case ConsoleKey.F2: // Rediger
                 if (selected != null)
                     Display(new CustomerEditPage(selected));
