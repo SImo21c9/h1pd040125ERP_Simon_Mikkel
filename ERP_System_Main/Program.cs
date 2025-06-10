@@ -7,17 +7,26 @@ public class Program
     {
         new Database();
 
-        
-        CompanyListPage companylistpage = new();
+        CompanyListPage companyListPage = new();
         CustomerListPage customerListPage = new();
         ProductDetailPage productListPage = new();
         SalesOrderList salesOrderList = new();
+
+
         Menu mainMenu = new();
-        mainMenu.Add(companylistpage); 
+        Console.WriteLine("Main Menu");
+
+
+
+        mainMenu.Add(companyListPage);
         mainMenu.Add(customerListPage);
         mainMenu.Add(productListPage);
         mainMenu.Add(salesOrderList);
+
+
+
         Screen.Display(mainMenu);
-        //i just added this to test the workflow runs 
+
+        Console.ReadLine();
     }
 }

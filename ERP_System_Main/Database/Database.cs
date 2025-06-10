@@ -23,9 +23,9 @@ public partial class Database
         {
             SqlConnectionStringBuilder builder = new();
             builder.DataSource = "DESKTOP-0PBVOB5";
-            builder.UserID = "Gruppe_Simon_Mikkel";
-            builder.Password = "simon123";
-            builder.InitialCatalog = "ERP_SYSTEM";
+            builder.UserID = "Gruppe_Mikkel_Simon";
+            builder.Password = "sqlserver1";
+            builder.InitialCatalog = "Mikke_Simon_Database";
             builder.TrustServerCertificate = true;
 
             _connection = new SqlConnection(builder.ToString());

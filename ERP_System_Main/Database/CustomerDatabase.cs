@@ -29,6 +29,7 @@ public partial class Database
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
         command.CommandText = "SELECT CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country FROM Customers";
+        connection.Open();
         command.ExecuteReader();
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
