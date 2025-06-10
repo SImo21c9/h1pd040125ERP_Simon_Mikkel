@@ -4,7 +4,7 @@ namespace ERP_System;
 
 public class SalesOrderList : Screen
 {
-    public override string Title { get; set; } = "SalesOrderDetail";
+    public override string Title { get; set; } = "Sales Orders";
 
     protected override void Draw()
     {

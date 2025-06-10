@@ -9,16 +9,19 @@ public class CustomerListPage : Screen
     protected override void Draw()
     {
         ListPage<Customer> lp = new();
-        lp.AddKey(ConsoleKey.F1, createCustomer);
         lp.AddColumn("Customer ID", nameof(Customer.CustomerId));
         lp.AddColumn("Name", nameof(Customer.FullName));
         lp.AddColumn("Phone", nameof(Customer.PhoneNumber));
         lp.AddColumn("Email", nameof(Customer.Email));
 
+        lp.AddKey(ConsoleKey.Escape, quit);
+        lp.AddKey(ConsoleKey.F1, createCustomer);
+
         foreach (Customer customer in Database.Instance.GetCustomers())
         {
             lp.Add(customer);
         }
+
         Customer? selected = lp.Select();
 
         // Only handle F2 (edit) and default (details) here
@@ -34,6 +37,11 @@ public class CustomerListPage : Screen
                     Display(new CustomerDetailsPage(selected));
                 break;
         }
+    }
+
+    void quit(Customer _)
+    {
+        Quit();
     }
 
     void createCustomer(Customer _)

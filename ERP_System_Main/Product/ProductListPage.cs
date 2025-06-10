@@ -20,8 +20,11 @@ public class ProductListPage : Screen
         lp.AddColumn("Stock", nameof(Product.QuantityInStock));
         lp.AddColumn("Bought Price", nameof(Product.BoughtPrice));
         lp.AddColumn("Sales Price", nameof(Product.SalesPrice));
-        lp.AddColumn("Profit", nameof(Product.Profit));
+        lp.AddColumn("ProfitMargin", nameof(Product.Profit));
         lp.AddColumn("Profit %", nameof(Product.AvanceProcent));
+
+        lp.AddKey(ConsoleKey.Escape, quit);
+        lp.AddKey(ConsoleKey.F1, createProduct);
 
         foreach (var product in Database.Instance.GetProducts())
         {
@@ -33,5 +36,15 @@ public class ProductListPage : Screen
         {
             Display(new ProductEdit(selected));
         }
+    }
+
+    void quit(Product _)
+    {
+        Quit();
+    }
+    void createProduct(Product _)
+    {
+        Product newProduct = new();
+        Display(new ProductEdit(newProduct));
     }
 }
