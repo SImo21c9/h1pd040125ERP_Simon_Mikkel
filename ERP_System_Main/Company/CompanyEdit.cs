@@ -36,6 +36,7 @@ public class CompanyEdit : Screen
         {
             Database.Instance.UpdateCompany(_company);
         }
-        Display(new CompanyInfo(_company));
+
+        Quit();
     }
 }
