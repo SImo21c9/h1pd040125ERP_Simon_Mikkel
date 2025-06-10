@@ -56,6 +56,7 @@ public partial class Database
         
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
+        command.ExecuteNonQuery();
         command.CommandText = @"INSERT INTO Products (Name, Description, BoughtPrice, 
         SalesPrice, QuantityInStock, Location, Unit) VALUES (@Name,@Description, @BoughttPrice, @SalesPrice, @QuantityInStock, @Location, @Unit)";
         command.Parameters.AddWithValue("@Name", product.Name); 

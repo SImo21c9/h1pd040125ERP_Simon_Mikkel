@@ -1,7 +1,7 @@
 ﻿namespace ERP_System;
 using System.Collections.Generic;
 
-public class SalesOrder
+public class SalesOrder : Customer
 {
     public int SalesOrderId { get; set; }           // Intern ID
     public string OrderNumber { get; set; } = "";   // Ekstern ID

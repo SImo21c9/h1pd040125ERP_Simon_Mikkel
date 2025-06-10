@@ -25,12 +25,11 @@ public partial class Database
     // Returnerer alle kunder i en array
     public Customer[] GetCustomers()
     {
-        
-        List<Customer> customers = new();
+        //List<Customer> customers = new();
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
         command.CommandText = "SELECT CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country FROM Customers";
-        command.ExecuteNonQuery();
+        command.ExecuteReader();
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
@@ -55,7 +54,7 @@ public partial class Database
     {
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
-        command.ExecuteReader();
+        command.ExecuteNonQuery();
         if (customer.CustomerId == 0)
         {
             command.CommandText = "INSERT INTO Customers (CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country ) VALUES (@CustomerId, @FirstName, @LastName, @Email, @PhoneNumber, @StreetNumber, @Street, @City, @PostCode, @Country)";
