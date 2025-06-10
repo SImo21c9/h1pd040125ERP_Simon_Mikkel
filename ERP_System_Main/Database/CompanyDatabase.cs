@@ -42,7 +42,6 @@ public partial class Database
             companyAdd.Country = (Country)reader.GetInt32(200);
             companyAdd.Currency = (Currency)reader.GetInt32(201);
         }
-
     }
 
     // Tilføjer en virksomhed hvis den endnu ikke har et ID
