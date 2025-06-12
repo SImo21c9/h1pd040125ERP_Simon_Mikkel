@@ -1,10 +1,20 @@
 using TECHCOOL.UI;
 
-namespace ERP_System;
+using ERP_System;
 
 public class ProductDetailPage : Screen
 {
     public override string Title { get; set; } = "Product";
+    private Product? _product;
+
+    public ProductDetailPage()
+    {
+        _product = null;
+    }
+    public ProductDetailPage(Product product)
+    {
+        _product = product;
+    }
 
     protected override void Draw()
     {

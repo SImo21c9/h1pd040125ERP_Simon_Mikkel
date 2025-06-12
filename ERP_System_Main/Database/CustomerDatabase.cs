@@ -76,8 +76,9 @@ public partial class Database
     {
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
-        command.CommandText = @"UPDATE Customer SET CustomerId = @CustomerId, FirstName = @FirstName, LastName = @LastName, Email = @Email, PhoneNumber = @PhoneNumber, StreetNumber = @StreetNumber, Street = @Street, City = @City, PostCode = @PostCode, Country = @Country" ;
-        command.Parameters.AddWithValue("@CustomerId", customer.CustomerId); 
+        command.CommandText =
+            @"UPDATE Customer SET CustomerId = @CustomerId, FirstName = @FirstName, LastName = @LastName, Email = @Email, PhoneNumber = @PhoneNumber, StreetNumber = @StreetNumber, Street = @Street, City = @City, PostCode = @PostCode, Country = @Country";
+        command.Parameters.AddWithValue("@CustomerId", customer.CustomerId);
         command.Parameters.AddWithValue("@FirstName", customer.FirstName);
         command.Parameters.AddWithValue("@LastName", customer.LastName);
         command.Parameters.AddWithValue("@Email", customer.Email);
@@ -89,7 +90,6 @@ public partial class Database
         command.Parameters.AddWithValue("@Country", customer.Country);
 
         command.ExecuteNonQuery();
-
     }
 
 

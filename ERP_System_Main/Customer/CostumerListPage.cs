@@ -1,6 +1,5 @@
 ﻿namespace ERP_System;
 using TECHCOOL.UI;
-using System.Linq;
 
 public class CustomerListPage : Screen
 {
@@ -9,44 +8,40 @@ public class CustomerListPage : Screen
     protected override void Draw()
     {
         ListPage<Customer> lp = new();
+
         lp.AddColumn("Customer ID", nameof(Customer.CustomerId));
         lp.AddColumn("Name", nameof(Customer.FullName));
         lp.AddColumn("Phone", nameof(Customer.PhoneNumber));
         lp.AddColumn("Email", nameof(Customer.Email));
 
-        lp.AddKey(ConsoleKey.Escape, quit);
-        lp.AddKey(ConsoleKey.F1, createCustomer);
+        lp.AddKey(ConsoleKey.Escape, _ => Quit());
+        lp.AddKey(ConsoleKey.F1, _ => CreateCustomer());
+        lp.AddKey(ConsoleKey.F2, customer => EditCustomer(customer));
+        lp.AddKey(ConsoleKey.Enter, customer => ShowCustomerDetails(customer));
 
         foreach (Customer customer in Database.Instance.GetCustomers())
         {
             lp.Add(customer);
         }
 
-        Customer? selected = lp.Select();
-
-        // Only handle F2 (edit) and default (details) here
-        ConsoleKeyInfo key = Console.ReadKey(true);
-        switch (key.Key)
-        {
-            case ConsoleKey.F2: // Rediger
-                if (selected != null)
-                    Display(new CustomerEditPage(selected));
-                break;
-            default:
-                if (selected != null)
-                    Display(new CustomerDetailsPage(selected));
-                break;
-        }
+        lp.Select();
     }
 
-    void quit(Customer _)
-    {
-        Quit();
-    }
-
-    void createCustomer(Customer _)
+    private void CreateCustomer()
     {
         Customer newCustomer = new();
         Display(new CustomerEditPage(newCustomer));
+    }
+
+    private void EditCustomer(Customer? customer)
+    {
+        if (customer == null) return;
+        Display(new CustomerEditPage(customer));
+    }
+
+    private void ShowCustomerDetails(Customer? customer)
+    {
+        if (customer == null) return;
+        Display(new CustomerDetailsPage(customer));
     }
 }

@@ -6,11 +6,6 @@ public class ProductListPage : Screen
     public override string Title { get; set; } = "Product List";
     private Product _product;
 
-    public ProductListPage(Product product)
-    {
-        _product = product;
-    }
-
     protected override void Draw()
     {
         Clear();
