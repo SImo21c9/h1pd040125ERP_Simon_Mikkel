@@ -32,17 +32,24 @@ public partial class Database
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
-            Company company = new Company();
-            company.CompanyId = reader.GetInt32(0);
-            company.CompanyName = reader.GetString(1);
-            company.Name = reader.GetString(2);
-            company.Street = reader.GetString(3);
-            company.StreetNumber = reader.GetString(4);
-            company.City = reader.GetString(5);
-            company.PostCode = reader.GetString(6);
-            company.Country = (Country)Enum.Parse(typeof(Country), reader.GetString(7));
-            company.Currency = (Currency)Enum.Parse(typeof(Currency), reader.GetString(8));
-            companiesList.Add(company);
+            try
+            {
+                Company company = new Company();
+                company.CompanyId = reader.GetInt32(0);
+                company.CompanyName = reader.GetString(1);
+                company.Name = reader.GetString(2);
+                company.Street = reader.GetString(3);
+                company.StreetNumber = reader.GetString(4);
+                company.City = reader.GetString(5);
+                company.PostCode = reader.GetString(6);
+                company.Country = (Country)Enum.Parse(typeof(Country), reader.GetString(7));
+                company.Currency = (Currency)Enum.Parse(typeof(Currency), reader.GetString(8));
+                companiesList.Add(company);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fejl ved indlæsning af virksomhed: " + ex.Message);
+            }
         }
         reader.Close();
         return companiesList.ToArray();

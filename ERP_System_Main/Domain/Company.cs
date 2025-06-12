@@ -11,9 +11,8 @@ public class Company
     public Address Address { get; set; } = new Address();
     public string Street
     {
-        get => Address.Street; // Vejnavn
-
-        set => Address.Street = value;
+        get => Address != null ? Address.Street : ""; // Vejnavn
+        set { if (Address != null) Address.Street = value; }
     }
 
     public string City { get; set; } = "";          // By
@@ -21,11 +20,8 @@ public class Company
     public string Company_StreetNumber;
     public string StreetNumber
     {
-        get => Address.HouseNumber;// Husnummer
-        set
-        {
-            Address.HouseNumber = value;
-        }
+        get => Address != null ? Address.HouseNumber : ""; // Husnummer
+        set { if (Address != null) Address.HouseNumber = value; }
     }
 
     public string PostCode { get; set; } = "";      // Postnummer

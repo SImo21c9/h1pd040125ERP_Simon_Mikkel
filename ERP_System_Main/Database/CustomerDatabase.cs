@@ -28,26 +28,34 @@ public partial class Database
         List<Customer> customers = new();
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
-        
+
         command.CommandText = "SELECT CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country FROM Customers";
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
-            Customer customeradd = new();
-            customeradd.CustomerId = reader.GetInt32(0);
-            customeradd.FirstName = reader.GetString(40);
-            customeradd.LastName = reader.GetString(45);
-            customeradd.Email = reader.GetString(70);
-            customeradd.PhoneNumber = reader.GetInt32(0);
-            customeradd.StreetNumber = reader.GetString(40);
-            customeradd.Street = reader.GetString(10);
-            customeradd.City = reader.GetString(50);
-            customeradd.PostCode = reader.GetString(10);
-            customeradd.Country = (Country)reader.GetInt32(0);
+            try
+            {
+                Customer customeradd = new();
+                customeradd.CustomerId = reader.GetInt32(0);
+                customeradd.FirstName = reader.GetString(1);
+                customeradd.LastName = reader.GetString(2);
+                customeradd.Email = reader.GetString(3);
+                customeradd.PhoneNumber = reader.GetInt32(4);
+                customeradd.StreetNumber = reader.GetString(5);
+                customeradd.Street = reader.GetString(6);
+                customeradd.City = reader.GetString(7);
+                customeradd.PostCode = reader.GetString(8);
+                customeradd.Country = (Country)reader.GetInt32(9);
 
+                customers.Add(customeradd);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fejl ved indlæsning af kunde: " + ex.Message);
+            }
         }
         reader.Close();
-        return customers.ToArray(); // Konverterer listen til et array
+        return customers.ToArray();
     }
 
     // Tilføjer en kunde hvis den endnu ikke har et ID
@@ -55,7 +63,7 @@ public partial class Database
     {
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
-        command.CommandText = "INSERT INTO Customers (CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country ) VALUES (@CustomerId, @FirstName, @LastName, @Email, @PhoneNumber, @StreetNumber, @Street, @City, @PostCode, @Country);  SELECT SCOPE_IDENTITY():";
+        command.CommandText = "INSERT INTO Customers (CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country ) VALUES (@CustomerId, @FirstName, @LastName, @Email, @PhoneNumber, @StreetNumber, @Street, @City, @PostCode, @Country); SELECT SCOPE_IDENTITY();";
         command.Parameters.AddWithValue("@CustomerId", customer.CustomerId); 
         command.Parameters.AddWithValue("@FirstName", customer.FirstName);
         command.Parameters.AddWithValue("@LastName", customer.LastName);
@@ -98,7 +106,7 @@ public partial class Database
     {
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
-        command.CommandText = "DELETE FROM Customers WHERE Customer = @CustomerId";
+        command.CommandText = "DELETE FROM Customers WHERE CustomerId = @CustomerId";
         command.Parameters.AddWithValue("@CustomerId", id);
         command.ExecuteNonQuery();
         
