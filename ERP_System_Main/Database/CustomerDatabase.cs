@@ -82,24 +82,47 @@ public partial class Database
     // Opdaterer en eksisterende kunde, hvis ID findes
     public void UpdateCustomer(Customer customer)
     {
-        SqlConnection connection = GetConnection();
-        SqlCommand command = connection.CreateCommand();
-        command.CommandText =
-            @"UPDATE Customer SET CustomerId = @CustomerId, FirstName = @FirstName, LastName = @LastName, Email = @Email, PhoneNumber = @PhoneNumber, StreetNumber = @StreetNumber, Street = @Street, City = @City, PostCode = @PostCode, Country = @Country";
-        command.Parameters.AddWithValue("@CustomerId", customer.CustomerId);
-        command.Parameters.AddWithValue("@FirstName", customer.FirstName);
-        command.Parameters.AddWithValue("@LastName", customer.LastName);
-        command.Parameters.AddWithValue("@Email", customer.Email);
-        command.Parameters.AddWithValue("@PhoneNumber", customer.PhoneNumber);
-        command.Parameters.AddWithValue("@StreetNumber", customer.StreetNumber);
-        command.Parameters.AddWithValue("@Street", customer.Street);
-        command.Parameters.AddWithValue("@City", customer.City);
-        command.Parameters.AddWithValue("@PostCode", customer.PostCode);
-        command.Parameters.AddWithValue("@Country", customer.Country);
+        try
+        {
+            using (SqlConnection connection = GetConnection())
+            {
+                //connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText =
+                        @"UPDATE Customers SET 
+                            FirstName = @FirstName, 
+                            LastName = @LastName, 
+                            Email = @Email, 
+                            PhoneNumber = @PhoneNumber, 
+                            StreetNumber = @StreetNumber, 
+                            Street = @Street, 
+                            City = @City, 
+                            PostCode = @PostCode, 
+                            Country = @Country
+                          WHERE CustomerId = @CustomerId";
 
-        command.ExecuteNonQuery();
+                    command.Parameters.AddWithValue("@CustomerId", customer.CustomerId);
+                    command.Parameters.AddWithValue("@FirstName", customer.FirstName ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@LastName", customer.LastName ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@Email", customer.Email ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@PhoneNumber", customer.PhoneNumber);
+                    command.Parameters.AddWithValue("@StreetNumber", customer.StreetNumber ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@Street", customer.Street ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@City", customer.City ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@PostCode", customer.PostCode ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@Country", (int)customer.Country);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Fejl ved opdatering af kunde: " + ex.Message);
+            Console.ReadLine();
+        }
     }
-
 
     // Sletter en kunde baseret på ID
     public void DeleteCustomer(int id)
