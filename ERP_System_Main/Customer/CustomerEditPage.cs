@@ -40,6 +40,7 @@ public class CustomerEditPage : Screen
         {
             Database.Instance.UpdateCustomer(_customer);
         }
+        
         Quit();
     }
 }

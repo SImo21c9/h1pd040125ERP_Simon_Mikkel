@@ -26,10 +26,7 @@ public class ProductEdit : Screen
 
         if (editForm.Edit(_product))
         {
-            if (_product.ProductId == 0)
-                Database.Instance.AddProduct(_product);
-            else
-                Database.Instance.UpdateProduct(_product);
+            Database.Instance.UpdateProduct(_product);
         } 
         Quit();
     }
