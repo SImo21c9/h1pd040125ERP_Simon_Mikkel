@@ -56,7 +56,8 @@ public partial class Database
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
         command.CommandText = "INSERT INTO salesOrders (CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country ) VALUES (@CustomerId, @FirstName, @LastName, @Email, @PhoneNumber, @StreetNumber, @Street, @City, @PostCode, @Country); SELECT SCOPE_IDENTITY(); ";
-        command.Parameters.AddWithValue("@CustomerId", order.CustomerId); 
+        command.Parameters.AddWithValue("@CustomerId", order.CustomerId);
+        /*
         command.Parameters.AddWithValue("@FirstName", order.FirstName);
         command.Parameters.AddWithValue("@LastName", order.LastName);
         command.Parameters.AddWithValue("@Email", order.Email);
@@ -66,7 +67,7 @@ public partial class Database
         command.Parameters.AddWithValue("@City", order.City);
         command.Parameters.AddWithValue("@PostCode", order.PostCode);
         command.Parameters.AddWithValue("@Country", order.Country);
-
+        */
         salesOrders.Add(order);
     }
     
@@ -79,6 +80,7 @@ public partial class Database
         command.ExecuteNonQuery();
         command.CommandText = @"UPDATE salesOrders SET CustomerId = @CustomerId, FirstName = @FirstName, LastName = @LastName, Email = @Email, PhoneNumber = @PhoneNumber, StreetNumber = @StreetNumber, Street = @Street, City = @City, PostCode = @PostCode, Country = @Country";
         command.Parameters.AddWithValue("@CustomerId", order.CustomerId); 
+        /*
         command.Parameters.AddWithValue("@FirstName", order.FirstName);
         command.Parameters.AddWithValue("@LastName", order.LastName);
         command.Parameters.AddWithValue("@Email", order.Email);
@@ -88,7 +90,7 @@ public partial class Database
         command.Parameters.AddWithValue("@City", order.City);
         command.Parameters.AddWithValue("@PostCode", order.PostCode);
         command.Parameters.AddWithValue("@Country", order.Country);
-
+        */
         command.ExecuteNonQuery();
     }
 
