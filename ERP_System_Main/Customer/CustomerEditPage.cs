@@ -15,6 +15,9 @@ public class CustomerEditPage : Screen
         Form<Customer> editForm = new();
         editForm.TextBox("First Name", nameof(Customer.FirstName));
         editForm.TextBox("Last Name", nameof(Customer.LastName));
+        editForm.TextBox("CompanyName", nameof(Customer.CompanyName));
+        editForm.TextBox("LastPurchase", nameof(Customer.LastPurchase));
+        //editForm.TextBox("Phone", nameof(Customer.PhoneNumber));
         editForm.TextBox("Email", nameof(Customer.Email));
         editForm.TextBox("Street", nameof(Customer.Street));
         editForm.TextBox("Street Number", nameof(Customer.StreetNumber));
@@ -34,11 +37,21 @@ public class CustomerEditPage : Screen
             editForm.AddOption("Country", country.ToString(), country);
         }
         
-        editForm.IntBox("CustomerId", nameof(Customer.CustomerId));
+        //editForm.IntBox("CustomerId", nameof(Customer.CustomerId));
 
-        if (editForm.Edit(_customer))
+        try
         {
-            Database.Instance.UpdateCustomer(_customer);
+            if (editForm.Edit(_customer))
+            {
+                if (_customer.CustomerId > 0)
+                    Database.Instance.UpdateCustomer(_customer);
+                else
+                    Database.Instance.AddCustomer(_customer);
+            }
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine(ex.Message);
         }
         
         Quit();

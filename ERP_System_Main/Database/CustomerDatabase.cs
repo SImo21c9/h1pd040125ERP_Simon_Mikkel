@@ -38,7 +38,7 @@ public partial class Database
                 Customer customeradd = new();
                 customeradd.CustomerId = reader.GetInt32(0);
                 customeradd.FirstName = reader.GetString(1);
-                customeradd.LastName = reader.GetString(2);
+                customeradd.LastName   = reader.GetString(2);
                 customeradd.Email = reader.GetString(3);
                 customeradd.PhoneNumber = reader.GetInt32(4);
                 customeradd.StreetNumber = reader.GetString(5);
@@ -59,11 +59,12 @@ public partial class Database
     }
 
     // Tilføjer en kunde hvis den endnu ikke har et ID
-    public void AddCustomer(Customer customer)
+    public Customer[] AddCustomer(Customer customer)
     {
         SqlConnection connection = GetConnection();
+        List<Customer> customers = new();
         SqlCommand command = connection.CreateCommand();
-        command.CommandText = "INSERT INTO Customers (CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country ) VALUES (@CustomerId, @FirstName, @LastName, @Email, @PhoneNumber, @StreetNumber, @Street, @City, @PostCode, @Country); SELECT SCOPE_IDENTITY();";
+        command.CommandText = "INSERT INTO Customers (FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country ) VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @StreetNumber, @Street, @City, @PostCode, @Country); SELECT SCOPE_IDENTITY();";
         command.Parameters.AddWithValue("@CustomerId", customer.CustomerId); 
         command.Parameters.AddWithValue("@FirstName", customer.FirstName);
         command.Parameters.AddWithValue("@LastName", customer.LastName);
@@ -73,9 +74,10 @@ public partial class Database
         command.Parameters.AddWithValue("@Street", customer.Street);
         command.Parameters.AddWithValue("@City", customer.City);
         command.Parameters.AddWithValue("@PostCode", customer.PostCode);
-        command.Parameters.AddWithValue("@Country", customer.Country); 
-            
+        command.Parameters.AddWithValue("@Country", customer.Country);
+        command.ExecuteNonQuery();
         customers.Add(customer);
+        return customers.ToArray();
 
     }
 

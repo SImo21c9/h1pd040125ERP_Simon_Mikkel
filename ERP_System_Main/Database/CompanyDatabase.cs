@@ -92,8 +92,8 @@ public partial class Database
                                    PostCode = @PostCode, 
                                    Country = @Country,
                                    Currency = @Currency
-                                   WHERE CompanyId = @CompanyId";
-
+                                   WHERE CompanyId = @CompanyId"; 
+            
             command.Parameters.AddWithValue("@CompanyId", company.CompanyId);
             command.Parameters.AddWithValue("@CompanyName", company.CompanyName);
             command.Parameters.AddWithValue("@Name", company.Name);

@@ -46,7 +46,6 @@ public class CompanyEdit : Screen
 
         if (editForm.Edit(_company))
         {
-            // User pressed Enter/confirmed changes
             if (_isNewCompany)
             {
                 Database.Instance.AddCompany(_company);
