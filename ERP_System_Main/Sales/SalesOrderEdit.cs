@@ -14,14 +14,15 @@ public class SalesOrderEdit : Screen
     protected override void Draw()
     {
         Form<SalesOrder> editForm = new();
-        editForm.TextBox("First Name ", nameof(Customer.FirstName));
-        editForm.TextBox("Last Name", nameof(Customer.LastName));
-        editForm.TextBox("Street ", nameof(Customer.Street));
-        editForm.TextBox("House Number", nameof(Customer.HouseNumber));
-        editForm.TextBox("PostCode", nameof(Customer.PostCode));
-        editForm.TextBox("City", nameof(Customer.City));
-        editForm.TextBox("Phone Number", nameof(Customer.PhoneNumber));
-        editForm.TextBox("Email", nameof(Customer.Email));
+
+        
+        editForm.TextBox("Order Number", nameof(SalesOrder.OrderNumber));
+        editForm.IntBox("Kunde id", nameof(SalesOrder.CustomerId));
+        editForm.SelectBox("Status", nameof(SalesOrder.Status));
+        editForm.AddOption("Status", "Bekrafted", SalesOrderStatus.Created);
+        editForm.AddOption("Status", "Annuleret", SalesOrderStatus.Cancelled);
+        editForm.AddOption("Status", "Afsluttet", SalesOrderStatus.Done);
+
 
         if (editForm.Edit(_salesorder))
         {
