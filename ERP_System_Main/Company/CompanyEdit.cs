@@ -1,7 +1,7 @@
 using TECHCOOL.UI;
 namespace ERP_System;
 
-public class CompanyEdit : Screen
+public class CompanyEdit : Screen 
 {
     public override string Title { get; set; } = "Company";
     private Company _company;

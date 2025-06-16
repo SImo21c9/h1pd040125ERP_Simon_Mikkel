@@ -5,5 +5,4 @@ using TECHCOOL.UI;
 public enum Country
 { 
     UnitedStates, China, Denmark, Germany, Sweden
-      
 }
