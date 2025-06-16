@@ -6,5 +6,4 @@ using TECHCOOL.UI;
 public enum Country //Datatype 
 { 
     UnitedStates, China, Denmark, Germany, Sweden
-      
 }

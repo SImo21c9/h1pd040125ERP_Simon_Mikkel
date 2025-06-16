@@ -34,7 +34,7 @@ namespace ERP_System_Main.Sales
             lp.AddKey(ConsoleKey.Escape, _ => Quit());
             lp.AddKey(ConsoleKey.F1, _ => AddOrderLine());
             lp.AddKey(ConsoleKey.F2, line => EditOrderLine(line));
-            lp.AddKey(ConsoleKey.Delete, line => DeleteOrderLine(line));
+            lp.AddKey(ConsoleKey.F5, line => DeleteOrderLine(line));
 
             foreach (var line in _salesOrder.Lines)
             {

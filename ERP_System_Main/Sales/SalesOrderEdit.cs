@@ -26,7 +26,8 @@ public class SalesOrderEdit : Screen
 
         if (editForm.Edit(_salesorder))
         {
-            Database.Instance.UpdateSalesOrder(_salesorder);
+            //TODO: check ID to see if we add or update
+            Database.Instance.AddSalesOrder(_salesorder);
         }
         Quit();
     }
