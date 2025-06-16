@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ERP_System;
 
-public class Customer : Person
+public class Customer : Person //Arv 
 {
     public int CustomerId { get; set; }
     public int CompanyId { get; set; }              // ID (bruges til søgning/opdatering)
@@ -25,7 +25,6 @@ public class Customer : Person
     public string Customer_Address
     {
         get => $"{Street} {StreetNumber}, {PostCode} {City}, ";
-        
     }
     // customer full name 
     public string FullName => FirstName + " " + LastName;

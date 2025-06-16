@@ -30,21 +30,20 @@ public partial class Database
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
         
-        command.CommandText = "SELECT CustomerId,FirstName, LastName, Email, PhoneNumber, StreetNumber, Street,City, PostCode, Country FROM SalesOrders";
+        command.CommandText = "SELECT FirstName, LastName, Email, PhoneNumber, StreetNumber, Street,City, PostCode, Country FROM SalesOrders";
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
             Customer salesOrderadd = new();
-            salesOrderadd.CustomerId = reader.GetInt32(0);
-            salesOrderadd.FirstName = reader.GetString(40);
-            salesOrderadd.LastName = reader.GetString(45);
-            salesOrderadd.Email = reader.GetString(70);
-            salesOrderadd.PhoneNumber = reader.GetInt32(0);
-            salesOrderadd.StreetNumber = reader.GetString(40);
-            salesOrderadd.Street = reader.GetString(10);
-            salesOrderadd.City = reader.GetString(50);
-            salesOrderadd.PostCode = reader.GetString(10);
-            salesOrderadd.Country = (Country) reader.GetInt32(0);
+            salesOrderadd.FirstName = reader.GetString(0);
+            salesOrderadd.LastName = reader.GetString(1);
+            salesOrderadd.Email = reader.GetString(2);
+            salesOrderadd.PhoneNumber = reader.GetString(3);
+            salesOrderadd.StreetNumber = reader.GetString(4);
+            salesOrderadd.Street = reader.GetString(5);
+            salesOrderadd.City = reader.GetString(6);
+            salesOrderadd.PostCode = reader.GetString(7);
+            salesOrderadd.Country = (Country) reader.GetInt32(8);
         }
 
         reader.Close();
@@ -55,7 +54,7 @@ public partial class Database
     {
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
-        command.CommandText = "INSERT INTO salesOrders (CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country ) VALUES (@CustomerId, @FirstName, @LastName, @Email, @PhoneNumber, @StreetNumber, @Street, @City, @PostCode, @Country); SELECT SCOPE_IDENTITY(); ";
+        command.CommandText = "INSERT INTO SalesOrders (CustomerId, FirstName, LastName, Email, PhoneNumber, StreetNumber, Street, City, PostCode, Country ) VALUES (@CustomerId, @FirstName, @LastName, @Email, @PhoneNumber, @StreetNumber, @Street, @City, @PostCode, @Country); SELECT SCOPE_IDENTITY(); ";
         command.Parameters.AddWithValue("@CustomerId", order.CustomerId);
         /*
         command.Parameters.AddWithValue("@FirstName", order.FirstName);
@@ -80,7 +79,7 @@ public partial class Database
         SqlCommand command = connection.CreateCommand();
 
         command.ExecuteNonQuery();
-        command.CommandText = @"UPDATE salesOrders SET CustomerId = @CustomerId, FirstName = @FirstName, LastName = @LastName, Email = @Email, PhoneNumber = @PhoneNumber, StreetNumber = @StreetNumber, Street = @Street, City = @City, PostCode = @PostCode, Country = @Country";
+        command.CommandText = @"UPDATE SalesOrders SET CustomerId = @CustomerId, FirstName = @FirstName, LastName = @LastName, Email = @Email, PhoneNumber = @PhoneNumber, StreetNumber = @StreetNumber, Street = @Street, City = @City, PostCode = @PostCode, Country = @Country";
         command.Parameters.AddWithValue("@CustomerId", order.CustomerId); 
         /*
         command.Parameters.AddWithValue("@FirstName", order.FirstName);
@@ -100,7 +99,7 @@ public partial class Database
     {
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
-        command.CommandText = "DELETE FROM salesOrders WHERE SalesOrderId = @SalesOrderId";
+        command.CommandText = "DELETE FROM SalesOrders WHERE SalesOrderId = @SalesOrderId";
         command.Parameters.AddWithValue("@SalesOrderId", id);
         command.ExecuteNonQuery();
 

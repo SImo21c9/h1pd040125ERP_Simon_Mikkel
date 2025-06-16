@@ -44,6 +44,7 @@ public class CompanyEdit : Screen
             editForm.AddOption("Country", country.ToString(), country);
         }
 
+        
         if (editForm.Edit(_company))
         {
             if (_isNewCompany)

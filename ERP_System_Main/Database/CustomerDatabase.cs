@@ -33,26 +33,19 @@ public partial class Database
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
-            try
-            {
-                Customer customeradd = new();
-                customeradd.CustomerId = reader.GetInt32(0);
-                customeradd.FirstName = reader.GetString(1);
-                customeradd.LastName   = reader.GetString(2);
-                customeradd.Email = reader.GetString(3);
-                customeradd.PhoneNumber = reader.GetInt32(4);
-                customeradd.StreetNumber = reader.GetString(5);
-                customeradd.Street = reader.GetString(6);
-                customeradd.City = reader.GetString(7);
-                customeradd.PostCode = reader.GetString(8);
-                customeradd.Country = (Country)reader.GetInt32(9);
+            Customer customeradd = new();
+            customeradd.CustomerId = reader.GetInt32(0);
+            customeradd.FirstName = reader.GetString(1);
+            customeradd.LastName   = reader.GetString(2);
+            customeradd.Email = reader.GetString(3);
+            customeradd.PhoneNumber = reader.GetString(4);
+            customeradd.StreetNumber = reader.GetString(5);
+            customeradd.Street = reader.GetString(6);
+            customeradd.City = reader.GetString(7);
+            customeradd.PostCode = reader.GetString(8);
+            customeradd.Country = (Country)reader.GetByte(9);
 
-                customers.Add(customeradd);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Fejl ved indlæsning af kunde: " + ex.Message);
-            }
+            customers.Add(customeradd);
         }
         reader.Close();
         return customers.ToArray();
@@ -119,7 +112,7 @@ public partial class Database
                 }
             }
         }
-        catch (Exception ex)
+        catch (SqlException ex) //Exception
         {
             Console.WriteLine("Fejl ved opdatering af kunde: " + ex.Message);
             Console.ReadLine();
@@ -142,3 +135,4 @@ public partial class Database
         }
     }
 }
+

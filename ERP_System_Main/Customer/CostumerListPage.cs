@@ -10,7 +10,7 @@ public class CustomerListPage : Screen
         ListPage<Customer> lp = new();
 
         lp.AddColumn("Customer ID", nameof(Customer.CustomerId));
-        //lp.AddColumn("Phone", nameof(Customer.PhoneNumber));
+        lp.AddColumn("Phone", nameof(Customer.PhoneNumber));
         lp.AddColumn("CompanyName", nameof(Customer.CompanyName));
         lp.AddColumn("LastPurchase", nameof(Customer.LastPurchase));
         lp.AddColumn("Email", nameof(Customer.Email));
@@ -27,16 +27,26 @@ public class CustomerListPage : Screen
         lp.AddKey(ConsoleKey.F1, _ => CreateCustomer());
         lp.AddKey(ConsoleKey.F2, customer => EditCustomer(customer));
         lp.AddKey(ConsoleKey.Enter, customer => ShowCustomerDetails(customer));
+        lp.AddKey(ConsoleKey.F5, customer => DeleteCustomer(customer));
    
         foreach (Customer customer in Database.Instance.GetCustomers())
         {
             lp.Add(customer);
         }
+        
+        //It will call CustomerEditpage and make a new customer 
         void CreateCustomer()
         {
             Customer newCustomer = new();
             Display(new CustomerEditPage(newCustomer));
             lp.Add(newCustomer);
+        }
+        
+        
+        void DeleteCustomer(Customer customer)
+        {
+            lp.Remove(customer);
+            Database.Instance.DeleteCustomer(customer.CustomerId);
         }
 
         lp.Select();
@@ -48,7 +58,6 @@ public class CustomerListPage : Screen
         if (customer == null) return;
         Display(new CustomerEditPage(customer));
     }
-
     
     private void ShowCustomerDetails(Customer? customer)
     {
