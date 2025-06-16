@@ -7,7 +7,7 @@ public abstract class Person
     public string FullName => FirstName + " " + LastName;
     public Address Address { get; set; } = new Address();
     public string Street => Address.Street;
-    public int PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
     public string Email { get; set; } = "";
     public string HouseNumber { get; set; } = "";
 

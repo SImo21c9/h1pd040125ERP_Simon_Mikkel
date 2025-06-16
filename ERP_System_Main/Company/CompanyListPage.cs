@@ -22,7 +22,14 @@ public partial class CompanyListPage : Screen
 
         lp.AddKey(ConsoleKey.Escape, quit);
         lp.AddKey(ConsoleKey.F1, createCompany);
-
+        lp.AddKey(ConsoleKey.F5, company => DeleteComapny(company));
+        lp.AddKey(ConsoleKey.F2, company => EditCompany(company));
+        
+        void DeleteComapny(Company company)
+        {
+            lp.Remove(company);
+            Database.Instance.DeleteCompany(company.CompanyId);
+        }
         // Tilføj data fra databasen
         foreach (var company in Database.Instance.GetCompanies())
         {
@@ -32,6 +39,12 @@ public partial class CompanyListPage : Screen
         Company? selected = lp.Select(); // Start interaktiv visning
     }
 
+    private void EditCompany(Company? company)
+    {
+        if (company == null) return;
+        Display(new CompanyEdit(company));
+    }
+    
     void quit(Company _)
     {
         Quit();

@@ -24,7 +24,7 @@ public partial class Database
 
     public Company[] GetCompanies()
     {
-        List<Company> companiesList = new List<Company>();
+        List<Company> companies = new List<Company>();
         SqlConnection connection = GetConnection();
         SqlCommand command = connection.CreateCommand();
         
@@ -44,7 +44,7 @@ public partial class Database
                 company.PostCode = reader.GetString(6);
                 company.Country = (Country)Enum.Parse(typeof(Country), reader.GetString(7));
                 company.Currency = (Currency)Enum.Parse(typeof(Currency), reader.GetString(8));
-                companiesList.Add(company);
+                companies.Add(company);
             }
             catch (Exception ex)
             {
@@ -52,18 +52,18 @@ public partial class Database
             }
         }
         reader.Close();
-        return companiesList.ToArray();
+        return companies.ToArray();
     }
 
 
-    public void AddCompany(Company company)
+    public Company[] AddCompany(Company company)
     {
         SqlConnection connection = GetConnection();
+        List<Company> companies = new();
         SqlCommand command = connection.CreateCommand();
         command.CommandText = @"INSERT INTO Companies (CompanyName, Name, Street, StreetNumber, City, PostCode, Country, Currency) 
                                    VALUES (@CompanyName, @Name, @Street, @StreetNumber, @City, @PostCode, @Country, @Currency);
                                    SELECT SCOPE_IDENTITY();";
-            
         command.Parameters.AddWithValue("@CompanyName", company.CompanyName);
         command.Parameters.AddWithValue("@Name", company.Name );
         command.Parameters.AddWithValue("@Street", company.Street );
@@ -72,8 +72,9 @@ public partial class Database
         command.Parameters.AddWithValue("@PostCode", company.PostCode);
         command.Parameters.AddWithValue("@Country", (int)company.Country);
         command.Parameters.AddWithValue("@Currency", (int)company.Currency);
-        
+        command.ExecuteNonQuery();
         companies.Add(company);
+        return companies.ToArray();
     }
 
 

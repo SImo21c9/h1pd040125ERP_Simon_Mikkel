@@ -17,7 +17,7 @@ public class CustomerEditPage : Screen
         editForm.TextBox("Last Name", nameof(Customer.LastName));
         editForm.TextBox("CompanyName", nameof(Customer.CompanyName));
         editForm.TextBox("LastPurchase", nameof(Customer.LastPurchase));
-        //editForm.TextBox("Phone", nameof(Customer.PhoneNumber));
+        editForm.TextBox("Phone", nameof(Customer.PhoneNumber));
         editForm.TextBox("Email", nameof(Customer.Email));
         editForm.TextBox("Street", nameof(Customer.Street));
         editForm.TextBox("Street Number", nameof(Customer.StreetNumber));
@@ -39,6 +39,8 @@ public class CustomerEditPage : Screen
         
         //editForm.IntBox("CustomerId", nameof(Customer.CustomerId));
 
+        //AddCustomer Customer 
+        //If customerid is bigger than 0 then it will update the customer, otherwise it will create a new customer. 
         try
         {
             if (editForm.Edit(_customer))

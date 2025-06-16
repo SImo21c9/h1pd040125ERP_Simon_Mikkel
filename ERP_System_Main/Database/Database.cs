@@ -16,7 +16,7 @@ public partial class Database
         }
     }
 
-    private SqlConnection? _connection;
+    private SqlConnection? _connection; //indkapsling 
     public SqlConnection GetConnection()
     {
         try
