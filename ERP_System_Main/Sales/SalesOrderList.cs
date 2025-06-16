@@ -1,3 +1,4 @@
+using ERP_System_Main.Sales;
 using TECHCOOL.UI;
 
 namespace ERP_System;
@@ -42,7 +43,8 @@ public class SalesOrderList : Screen
     void CreateOrder(SalesOrder _)
     {
         SalesOrder salesOrder = new();
-        Display(new SalesOrderEdit(new SalesOrder()));
+        Display(new SalesOrderEdit(salesOrder));
+        Display(new SalesOrderLineListPage(salesOrder));
     }
         
 }

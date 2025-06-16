@@ -68,6 +68,8 @@ public partial class Database
         command.Parameters.AddWithValue("@PostCode", order.PostCode);
         command.Parameters.AddWithValue("@Country", order.Country);
         */
+
+        //TODO: Execute command
         salesOrders.Add(order);
     }
     
