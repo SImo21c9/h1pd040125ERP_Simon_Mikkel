@@ -6,8 +6,9 @@ using TECHCOOL.UI;
 // Håndterer lagring og adgang til kundedata
 public partial class Database
 {
-    private List<Customer> customers = new(); // Intern liste over kunder
-    private int nextCustomerId = 1;
+    //indkapsling
+    List<Customer> customers = new(); // Intern liste over kunder
+    int nextCustomerId = 1;
 
     // Finder og returnerer en kunde baseret på dens ID, eller null hvis den ikke findes
     public Customer? GetCustomerById(int id)

@@ -8,8 +8,8 @@ public class Customer : Person //Arv
     public int CustomerId { get; set; }
     public int CompanyId { get; set; }              // ID (bruges til søgning/opdatering)
     public string CompanyName { get; set; }   // Visningsnavn (bruges i UI)
-    public string Street { get; set; }         // Vejnavn
-    public string StreetNumber { get; set; }   // Husnummer
+    public string ? Street { get; set; }          // Vejnavn
+    public string?  StreetNumber { get; set; }   // Husnummer
     public string City { get; set; }           // By
     public string PostCode { get; set; }       // Postnummer
     public Country Country { get; set; }             // Land
