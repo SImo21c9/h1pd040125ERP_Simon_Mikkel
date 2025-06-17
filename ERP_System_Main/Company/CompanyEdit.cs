@@ -12,7 +12,7 @@ public class CompanyEdit : Screen
         _company = company;
         _isNewCompany = company.CompanyId == 0; // If ID is 0, it's a new company
     }
-    
+     
     protected override void Draw()
     {
         Form<Company> editForm = new();
